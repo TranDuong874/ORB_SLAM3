@@ -1336,6 +1336,26 @@ vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
     return mTrackedKeyPointsUn;
 }
 
+vector<Eigen::Vector3f> System::GetCurrentMapPointPositions()
+{
+    vector<Eigen::Vector3f> positions;
+    Map* pCurrentMap = mpAtlas->GetCurrentMap();
+    if(!pCurrentMap)
+        return positions;
+
+    vector<MapPoint*> mapPoints = pCurrentMap->GetAllMapPoints();
+    positions.reserve(mapPoints.size());
+
+    for(MapPoint* pMP : mapPoints)
+    {
+        if(!pMP || pMP->isBad())
+            continue;
+        positions.push_back(pMP->GetWorldPos());
+    }
+
+    return positions;
+}
+
 double System::GetTimeFromIMUInit()
 {
     double aux = mpLocalMapper->GetCurrKFTime()-mpLocalMapper->mFirstTs;
@@ -1546,4 +1566,3 @@ string System::CalculateCheckSum(string filename, int type)
 }
 
 } //namespace ORB_SLAM
-
