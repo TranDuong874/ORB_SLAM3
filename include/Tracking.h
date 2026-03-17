@@ -93,6 +93,10 @@ public:
     {
         return mpLastKeyFrame;
     }
+    bool IsCurrentFrameKeyFrame() const
+    {
+        return mpLastKeyFrame && mpLastKeyFrame->mnFrameId == mCurrentFrame.mnId;
+    }
 
     void CreateMapInAtlas();
     //std::mutex mMutexTracks;
